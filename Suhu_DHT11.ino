@@ -2,20 +2,15 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <toneAC.h>
 
-const char* ssid = "Nama SSID WiFi";
-const char* password = "Password WiFi";
+const char* ssid = "Universitas Mulawarman";
+const char* password = "";
 
 #define DHTPIN D4 // pin digital sensor DHT11
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
 ESP8266WebServer server(80); // Port untuk web server
-
-const int buzzerPin = D5; // Pin untuk buzzer
-int buzzerFrequency = 2000; // Frekuensi bunyi buzzer
-int buzzerDuration = 1000; // Durasi bunyi buzzer dalam milidetik
 
 void setup() {
   Serial.begin(9600);
@@ -26,27 +21,17 @@ void setup() {
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi.");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP()); // Menampilkan alamat IP pada Serial Monitor
+  Serial.println(WiFi.localIP());
   dht.begin(); // Memulai sensor DHT11
 
   server.on("/", handleRoot); // Halaman utama
   server.on("/temperature", handleTemperature); // Halaman untuk menampilkan suhu
   server.on("/humidity", handleHumidity); // Halaman untuk menampilkan kelembaban
   server.begin(); // Memulai web server
-
-  pinMode(buzzerPin, OUTPUT); // Mengatur pin buzzer sebagai OUTPUT
 }
 
 void loop() {
   server.handleClient(); // Menangani permintaan dari klien
-
-  float temp = dht.readTemperature(); // Membaca nilai suhu
-  if (temp > 28.0) { // Jika suhu melebihi 28 derajat Celsius
-    toneAC(buzzerPin, buzzerFrequency, buzzerDuration); // Bunyi buzzer
-  } else {
-    noToneAC(buzzerPin); // Berhenti bunyi buzzer
-  }
 }
 
 void handleRoot() {
