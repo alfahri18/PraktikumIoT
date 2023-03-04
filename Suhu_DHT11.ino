@@ -3,8 +3,8 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "Universitas Mulawarman";
-const char* password = "";
+const char* ssid = "wifi-ssid";
+const char* password = "wifi-password";
 const int BUZZER_PIN = D2;
 
 #define DHTPIN D4 // pin digital sensor DHT11
